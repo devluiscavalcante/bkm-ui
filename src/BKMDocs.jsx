@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
     Box,
     Clock,
-    Code,
     Database,
     FileText,
     FolderTree,
@@ -10,7 +9,6 @@ import {
     Layers,
     Play,
     Plus,
-    Server,
     Settings,
     Trash2
 } from 'lucide-react';
@@ -70,13 +68,13 @@ export default function BKMDocs() {
 
 
     const sections = {
-        inicio: {
-            title: 'Backup Manager',
+        Initial: {
+            title: 'Home',
             icon: Database,
             content: <InitialSection/>
         },
 
-        sobre: {
+        About: {
             title: 'About',
             icon: FileText,
             content: <AboutSection/>
