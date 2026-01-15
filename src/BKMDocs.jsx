@@ -46,8 +46,36 @@ export default function BKMDocs() {
         }]);
     };
 
+    const FolderItem = ({ name, path, isExpanded, onToggle, level = 0, children }) => (
+        <div>
+            <div
+                className="flex items-center space-x-1 py-1 cursor-pointer hover:bg-gray-100 rounded px-1"
+                style={{ paddingLeft: `${level * 16}px` }}
+                onClick={onToggle}
+            >
+                <ChevronRight className={`w-3 h-3 text-gray-600 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+                <Folder className="w-4 h-4 text-gray-700" />
+                <span className="text-sm text-gray-900 font-mono">{name}</span>
+            </div>
+            {isExpanded && children && (
+                <div>{children}</div>
+            )}
+        </div>
+    );
+
+    const FileItem = ({ name, level = 0 }) => (
+        <div
+            className="flex items-center space-x-1 py-1 px-1"
+            style={{ paddingLeft: `${level * 16 + 16}px` }}
+        >
+            <File className="w-4 h-4 text-gray-600" />
+            <span className="text-sm text-gray-700 font-mono">{name}</span>
+        </div>
+    );
+
     const sections = {
         inicio: {
+            title: 'Backup Manager',
             icon: Database,
             content: (
                 <div className="space-y-12">
@@ -69,7 +97,7 @@ export default function BKMDocs() {
                         </div>
 
                         {/* Logo SVG */}
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                             <svg width="280" height="280" viewBox="0 0 200 200" className="text-gray-900">
                                 {/* Isometric BKM Logo */}
                                 <g transform="translate(100, 60)">
@@ -95,21 +123,21 @@ export default function BKMDocs() {
                     {/* Features Grid */}
                     <div className="grid grid-cols-3 gap-6 pt-8">
                         <div className="flex items-start space-x-3">
-                            <Zap className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
+                            <Zap className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                             <div>
                                 <h3 className="font-semibold text-gray-900 mb-1">Rápido</h3>
                                 <p className="text-sm text-gray-600">Backups incrementais e compactação eficiente</p>
                             </div>
                         </div>
                         <div className="flex items-start space-x-3">
-                            <Shield className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
+                            <Shield className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                             <div>
                                 <h3 className="font-semibold text-gray-900 mb-1">Seguro</h3>
                                 <p className="text-sm text-gray-600">Verificação de integridade e logs detalhados</p>
                             </div>
                         </div>
                         <div className="flex items-start space-x-3">
-                            <Package className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
+                            <Package className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                             <div>
                                 <h3 className="font-semibold text-gray-900 mb-1">Flexível</h3>
                                 <p className="text-sm text-gray-600">Múltiplas origens e destinos configuráveis</p>
@@ -128,7 +156,7 @@ export default function BKMDocs() {
                         <h3 className="text-sm font-semibold text-gray-900 mb-4">Como funciona</h3>
                         <div className="grid grid-cols-2 gap-6">
                             <div className="flex items-start space-x-3">
-                                <Settings className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
+                                <Settings className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Configure as origens que deseja proteger - diretórios ou arquivos específicos.
@@ -136,7 +164,7 @@ export default function BKMDocs() {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <Database className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
+                                <Database className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Defina os destinos onde os backups serão armazenados com segurança.
@@ -144,7 +172,7 @@ export default function BKMDocs() {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <Zap className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
+                                <Zap className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Execute manualmente ou configure execução automática programada.
@@ -152,7 +180,7 @@ export default function BKMDocs() {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <FileText className="w-5 h-5 text-gray-900 flex-shrink-0 mt-0.5" />
+                                <FileText className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Monitore através do histórico e logs detalhados de cada operação.
@@ -217,7 +245,7 @@ export default function BKMDocs() {
                     <div>
                         <h3 className="text-sm font-semibold text-gray-900 mb-3">API REST</h3>
                         <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm text-gray-700 space-y-1">
-                            <div>POST /api/backup/start</div>
+                            <div>POST /api/backup/execute</div>
                             <div>GET /api/backup/history</div>
                             <div>GET /api/backup/status</div>
                             <div>PUT /api/config</div>
@@ -236,25 +264,66 @@ export default function BKMDocs() {
                     </p>
 
                     <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-3">Estrutura de diretórios</h3>
-                        <div className="flex justify-center">
-                            <div className="bg-gray-50 border border-gray-200 rounded p-6 font-mono text-xs text-gray-700 inline-block">
-                <pre className="whitespace-pre">{`backup-manager/
-├── src/main/java/com/bkm/
-│   ├── controller/
-│   ├── service/
-│   ├── repository/
-│   ├── model/
-│   ├── config/
-│   └── util/
-├── src/main/resources/
-│   ├── static/
-│   ├── templates/
-│   └── application.yml
-├── backups/
-├── logs/
-└── database/`}</pre>
-                            </div>
+                        <div className="bg-gray-50 border border-gray-200 rounded p-4">
+                            <FolderItem
+                                name="backup-manager"
+                                path="root"
+                                isExpanded={expandedFolders.includes('root')}
+                                onToggle={() => toggleFolder('root')}
+                            >
+                                <FolderItem
+                                    name="src"
+                                    path="src"
+                                    isExpanded={expandedFolders.includes('src')}
+                                    onToggle={() => toggleFolder('src')}
+                                    level={1}
+                                >
+                                    <FolderItem
+                                        name="main"
+                                        path="main"
+                                        isExpanded={expandedFolders.includes('main')}
+                                        onToggle={() => toggleFolder('main')}
+                                        level={2}
+                                    >
+                                        <FolderItem
+                                            name="java"
+                                            path="java"
+                                            isExpanded={expandedFolders.includes('java')}
+                                            onToggle={() => toggleFolder('java')}
+                                            level={3}
+                                        >
+                                            <FolderItem
+                                                name="com/bkm"
+                                                path="bkm"
+                                                isExpanded={expandedFolders.includes('bkm')}
+                                                onToggle={() => toggleFolder('bkm')}
+                                                level={4}
+                                            >
+                                                <FileItem name="controller/" level={5} />
+                                                <FileItem name="service/" level={5} />
+                                                <FileItem name="repository/" level={5} />
+                                                <FileItem name="model/" level={5} />
+                                                <FileItem name="config/" level={5} />
+                                                <FileItem name="util/" level={5} />
+                                            </FolderItem>
+                                        </FolderItem>
+                                        <FolderItem
+                                            name="resources"
+                                            path="resources"
+                                            isExpanded={expandedFolders.includes('resources')}
+                                            onToggle={() => toggleFolder('resources')}
+                                            level={3}
+                                        >
+                                            <FileItem name="static/" level={4} />
+                                            <FileItem name="templates/" level={4} />
+                                            <FileItem name="application.yml" level={4} />
+                                        </FolderItem>
+                                    </FolderItem>
+                                </FolderItem>
+                                <FileItem name="backups/" level={1} />
+                                <FileItem name="logs/" level={1} />
+                                <FileItem name="database/" level={1} />
+                            </FolderItem>
                         </div>
                     </div>
 
@@ -296,6 +365,147 @@ export default function BKMDocs() {
                     </div>
                 </div>
             )
+        },
+        backup: {
+            title: 'Executar Backup',
+            icon: Play,
+            content: (
+                <div className="space-y-8">
+                    {/* Sources */}
+                    <div>
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center space-x-2">
+                                <FolderTree className="w-5 h-5 text-gray-900" />
+                                <h3 className="text-sm font-semibold text-gray-900">Origens</h3>
+                            </div>
+                            <button
+                                onClick={addSource}
+                                className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
+                            >
+                                <Plus className="w-4 h-4" />
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                        <div className="space-y-2">
+                            {sources.length === 0 ? (
+                                <div className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
+                                    Nenhuma origem selecionada
+                                </div>
+                            ) : (
+                                sources.map(source => (
+                                    <div key={source.id} className="flex items-center space-x-2">
+                                        <input
+                                            type="text"
+                                            placeholder="/caminho/para/origem"
+                                            className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-gray-400"
+                                            value={source.path}
+                                            onChange={(e) => {
+                                                setSources(sources.map(s =>
+                                                    s.id === source.id ? {...s, path: e.target.value} : s
+                                                ));
+                                            }}
+                                        />
+                                        <button
+                                            onClick={() => removeSource(source.id)}
+                                            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Destinations */}
+                    <div>
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center space-x-2">
+                                <Database className="w-5 h-5 text-gray-900" />
+                                <h3 className="text-sm font-semibold text-gray-900">Destinos</h3>
+                            </div>
+                            <button
+                                onClick={addDestination}
+                                className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
+                            >
+                                <Plus className="w-4 h-4" />
+                                <span>Adicionar</span>
+                            </button>
+                        </div>
+                        <div className="space-y-2">
+                            {destinations.length === 0 ? (
+                                <div className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
+                                    Nenhum destino selecionado
+                                </div>
+                            ) : (
+                                destinations.map(dest => (
+                                    <div key={dest.id} className="flex items-center space-x-2">
+                                        <input
+                                            type="text"
+                                            placeholder="/caminho/para/destino"
+                                            className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-gray-400"
+                                            value={dest.path}
+                                            onChange={(e) => {
+                                                setDestinations(destinations.map(d =>
+                                                    d.id === dest.id ? {...d, path: e.target.value} : d
+                                                ));
+                                            }}
+                                        />
+                                        <button
+                                            onClick={() => removeDestination(dest.id)}
+                                            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Execute Button */}
+                    <div className="flex justify-end">
+                        <button
+                            onClick={executeBackup}
+                            className="flex items-center space-x-2 px-6 py-2.5 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
+                        >
+                            <Play className="w-4 h-4" />
+                            <span>Executar Backup</span>
+                        </button>
+                    </div>
+
+                    {/* Logs */}
+                    <div>
+                        <div className="flex items-center space-x-2 mb-4">
+                            <Clock className="w-5 h-5 text-gray-900" />
+                            <h3 className="text-sm font-semibold text-gray-900">Histórico</h3>
+                        </div>
+                        <div className="border border-gray-200 rounded">
+                            {logs.length === 0 ? (
+                                <div className="text-center py-8 text-gray-500 text-sm bg-gray-50">
+                                    Nenhum backup executado ainda
+                                </div>
+                            ) : (
+                                <div className="divide-y divide-gray-200">
+                                    {logs.map(log => (
+                                        <div key={log.id} className="px-4 py-3 hover:bg-gray-50">
+                                            <div className="flex items-start justify-between">
+                                                <div className="flex-1">
+                                                    <p className="text-sm text-gray-900">{log.message}</p>
+                                                    <p className="text-xs text-gray-500 mt-1">{log.timestamp}</p>
+                                                </div>
+                                                <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">
+                          Sucesso
+                        </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )
         }
     };
 
@@ -314,7 +524,9 @@ export default function BKMDocs() {
                         rel="noopener noreferrer"
                         className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
                     >
-                        <Github className="w-5 h-5" />
+                        <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
+                            <Github className="w-4 h-4 text-white" />
+                        </div>
                         <span className="text-sm">BKM on Github</span>
                     </a>
                 </div>
