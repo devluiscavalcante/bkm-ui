@@ -1,6 +1,6 @@
-import { Database, Zap, Shield, Package } from 'lucide-react';
+import {Package, Shield, Zap} from 'lucide-react';
 
-export default function InicioSection() {
+export default function InitialSection() {
     return (
         <div className="space-y-12">
             {/* Hero Section */}
@@ -10,14 +10,14 @@ export default function InicioSection() {
                         Backup Manager
                     </h1>
                     <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                        Uma solução minimalista para gerenciamento de backups automáticos.
+                        A minimalist solution for automated backup management.
                     </p>
                     <p className="text-gray-700 leading-relaxed mb-4">
-                        O BKM permite criar cópias de segurança de múltiplas origens para diversos destinos de
-                        forma automatizada e eficiente.
+                        BKM allows you to create backup copies from multiple sources to multiple destinations
+                        in an automated and efficient way.
                     </p>
                     <p className="text-gray-700 leading-relaxed mb-8">
-                        Interface limpa, operação simples e controle total sobre seus dados.
+                        Clean interface, simple operation, and full control over your data.
                     </p>
                 </div>
 
@@ -43,18 +43,30 @@ export default function InicioSection() {
 
             {/* Features */}
             <div className="grid grid-cols-3 gap-6 pt-8">
-                <Feature icon={Zap} title="Rápido" text="Backups incrementais e compactação eficiente" />
-                <Feature icon={Shield} title="Seguro" text="Verificação de integridade e logs detalhados" />
-                <Feature icon={Package} title="Flexível" text="Múltiplas origens e destinos configuráveis" />
+                <Feature
+                    icon={Zap}
+                    title="Fast"
+                    text="Incremental backups and efficient compression"
+                />
+                <Feature
+                    icon={Shield}
+                    title="Secure"
+                    text="Integrity verification and detailed logs"
+                />
+                <Feature
+                    icon={Package}
+                    title="Flexible"
+                    text="Multiple configurable sources and destinations"
+                />
             </div>
         </div>
     );
 }
 
-function Feature({ icon: Icon, title, text }) {
+function Feature({icon: Icon, title, text}) {
     return (
         <div className="flex items-start space-x-3">
-            <Icon className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+            <Icon className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
             <div>
                 <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
                 <p className="text-sm text-gray-600">{text}</p>
