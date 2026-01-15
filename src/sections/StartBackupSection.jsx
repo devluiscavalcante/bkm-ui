@@ -1,4 +1,3 @@
-// src/sections/StartBackupSection.jsx
 import React from 'react';
 import { FolderTree, Database, Play, Clock, Plus, Trash2 } from 'lucide-react';
 
