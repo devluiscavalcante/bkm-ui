@@ -12,14 +12,14 @@ import {
     Plus,
     Server,
     Settings,
-    Trash2,
-    Zap
+    Trash2
 } from 'lucide-react';
 import FolderItem from './components/tree/FolderItem';
 import FileItem from './components/tree/FileItem';
 import Header from './components/layout/Header';
 import Sidebar from './components/layout/Sidebar';
 import InitialSection from './sections/InitialSection';
+import AboutSection from './sections/AboutSection';
 
 
 export default function BKMDocs() {
@@ -76,61 +76,11 @@ export default function BKMDocs() {
         },
 
         sobre: {
-            title: 'Sobre',
+            title: 'About',
             icon: FileText,
-            content: (
-                <div className="space-y-8">
-                    <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-4">Como funciona</h3>
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="flex items-start space-x-3">
-                                <Settings className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
-                                <div>
-                                    <p className="text-gray-700 leading-relaxed">
-                                        Configure as origens que deseja proteger - diretórios ou arquivos específicos.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex items-start space-x-3">
-                                <Database className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
-                                <div>
-                                    <p className="text-gray-700 leading-relaxed">
-                                        Defina os destinos onde os backups serão armazenados com segurança.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex items-start space-x-3">
-                                <Zap className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
-                                <div>
-                                    <p className="text-gray-700 leading-relaxed">
-                                        Execute manualmente ou configure execução automática programada.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex items-start space-x-3">
-                                <FileText className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
-                                <div>
-                                    <p className="text-gray-700 leading-relaxed">
-                                        Monitore através do histórico e logs detalhados de cada operação.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-3">Recursos</h3>
-                        <div className="space-y-2 text-gray-700">
-                            <p>Backup incremental para otimização de espaço</p>
-                            <p>Compactação automática de arquivos</p>
-                            <p>Histórico completo de operações</p>
-                            <p>Interface minimalista e intuitiva</p>
-                            <p>Logs detalhados para auditoria</p>
-                        </div>
-                    </div>
-                </div>
-            )
+            content: <AboutSection/>
         },
+
         especificacoes: {
             title: 'Especificações',
             icon: Settings,
