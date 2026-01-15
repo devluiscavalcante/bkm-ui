@@ -6,7 +6,7 @@ import InitialSection from './sections/InitialSection';
 import AboutSection from './sections/AboutSection';
 import SpecsSection from "./sections/SpecsSection";
 import {StructuresSection} from './sections/StructuresSection';
-
+import StartBackupSection from './sections/StartBackupSection';
 
 export default function BKMDocs() {
     const [activeSection, setActiveSection] = useState('inicio');
@@ -81,7 +81,18 @@ export default function BKMDocs() {
         backup: {
             title: 'Executar Backup',
             icon: Play,
-            content: <StructuresSection expandedFolders={expandedFolders} toggleFolder={toggleFolder}/>
+            content: <StartBackupSection
+                sources={sources}
+                destinations={destinations}
+                logs={logs}
+                addSource={addSource}
+                removeSource={removeSource}
+                addDestination={addDestination}
+                removeDestination={removeDestination}
+                executeBackup={executeBackup}
+                setSources={setSources}
+                setDestinations={setDestinations}
+            />
         }
     };
 
