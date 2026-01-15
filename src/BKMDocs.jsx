@@ -1,7 +1,26 @@
-import React, { useState } from 'react';
-import { ChevronRight, Database, Settings, FileText, FolderTree, Github, Zap, Shield, Package, Code, Layers, Server, HardDrive, Box, Play, ChevronDown, Folder, File, Plus, Trash2, Clock } from 'lucide-react';
+import React, {useState} from 'react';
+import {
+    Box,
+    Clock,
+    Code,
+    Database,
+    FileText,
+    FolderTree,
+    HardDrive,
+    Layers,
+    Package,
+    Play,
+    Plus,
+    Server,
+    Settings,
+    Shield,
+    Trash2,
+    Zap
+} from 'lucide-react';
 import FolderItem from './components/tree/FolderItem';
 import FileItem from './components/tree/FileItem';
+import Header from './components/layout/Header';
+import Sidebar from './components/layout/Sidebar';
 
 export default function BKMDocs() {
     const [activeSection, setActiveSection] = useState('inicio');
@@ -19,11 +38,11 @@ export default function BKMDocs() {
     };
 
     const addSource = () => {
-        setSources([...sources, { id: Date.now(), path: '' }]);
+        setSources([...sources, {id: Date.now(), path: ''}]);
     };
 
     const addDestination = () => {
-        setDestinations([...destinations, { id: Date.now(), path: '' }]);
+        setDestinations([...destinations, {id: Date.now(), path: ''}]);
     };
 
     const removeSource = (id) => {
@@ -65,7 +84,8 @@ export default function BKMDocs() {
                                 Uma solução minimalista para gerenciamento de backups automáticos.
                             </p>
                             <p className="text-gray-700 leading-relaxed mb-4">
-                                O BKM permite criar cópias de segurança de múltiplas origens para diversos destinos de forma automatizada e eficiente.
+                                O BKM permite criar cópias de segurança de múltiplas origens para diversos destinos de
+                                forma automatizada e eficiente.
                             </p>
                             <p className="text-gray-700 leading-relaxed mb-8">
                                 Interface limpa, operação simples e controle total sobre seus dados.
@@ -99,21 +119,21 @@ export default function BKMDocs() {
                     {/* Features Grid */}
                     <div className="grid grid-cols-3 gap-6 pt-8">
                         <div className="flex items-start space-x-3">
-                            <Zap className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+                            <Zap className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
                             <div>
                                 <h3 className="font-semibold text-gray-900 mb-1">Rápido</h3>
                                 <p className="text-sm text-gray-600">Backups incrementais e compactação eficiente</p>
                             </div>
                         </div>
                         <div className="flex items-start space-x-3">
-                            <Shield className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+                            <Shield className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
                             <div>
                                 <h3 className="font-semibold text-gray-900 mb-1">Seguro</h3>
                                 <p className="text-sm text-gray-600">Verificação de integridade e logs detalhados</p>
                             </div>
                         </div>
                         <div className="flex items-start space-x-3">
-                            <Package className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+                            <Package className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
                             <div>
                                 <h3 className="font-semibold text-gray-900 mb-1">Flexível</h3>
                                 <p className="text-sm text-gray-600">Múltiplas origens e destinos configuráveis</p>
@@ -132,7 +152,7 @@ export default function BKMDocs() {
                         <h3 className="text-sm font-semibold text-gray-900 mb-4">Como funciona</h3>
                         <div className="grid grid-cols-2 gap-6">
                             <div className="flex items-start space-x-3">
-                                <Settings className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+                                <Settings className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Configure as origens que deseja proteger - diretórios ou arquivos específicos.
@@ -140,7 +160,7 @@ export default function BKMDocs() {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <Database className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+                                <Database className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Defina os destinos onde os backups serão armazenados com segurança.
@@ -148,7 +168,7 @@ export default function BKMDocs() {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <Zap className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+                                <Zap className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Execute manualmente ou configure execução automática programada.
@@ -156,7 +176,7 @@ export default function BKMDocs() {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <FileText className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
+                                <FileText className="w-5 h-5 text-gray-900 shrink-0 mt-0.5"/>
                                 <div>
                                     <p className="text-gray-700 leading-relaxed">
                                         Monitore através do histórico e logs detalhados de cada operação.
@@ -186,7 +206,7 @@ export default function BKMDocs() {
                 <div className="space-y-8">
                     <div>
                         <div className="flex items-center space-x-2 mb-4">
-                            <Server className="w-5 h-5 text-gray-900" />
+                            <Server className="w-5 h-5 text-gray-900"/>
                             <h3 className="text-sm font-semibold text-gray-900">Backend</h3>
                         </div>
                         <ul className="space-y-2 text-gray-700 pl-7 list-disc">
@@ -199,7 +219,7 @@ export default function BKMDocs() {
 
                     <div>
                         <div className="flex items-center space-x-2 mb-4">
-                            <Code className="w-5 h-5 text-gray-900" />
+                            <Code className="w-5 h-5 text-gray-900"/>
                             <h3 className="text-sm font-semibold text-gray-900">Frontend</h3>
                         </div>
                         <ul className="space-y-2 text-gray-700 pl-7 list-disc">
@@ -220,7 +240,8 @@ export default function BKMDocs() {
 
                     <div>
                         <h3 className="text-sm font-semibold text-gray-900 mb-3">API REST</h3>
-                        <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm text-gray-700 space-y-1">
+                        <div
+                            className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm text-gray-700 space-y-1">
                             <div>POST /api/backup/execute</div>
                             <div>GET /api/backup/history</div>
                             <div>GET /api/backup/status</div>
@@ -275,12 +296,12 @@ export default function BKMDocs() {
                                                 onToggle={() => toggleFolder('bkm')}
                                                 level={4}
                                             >
-                                                <FileItem name="controller/" level={5} />
-                                                <FileItem name="service/" level={5} />
-                                                <FileItem name="repository/" level={5} />
-                                                <FileItem name="model/" level={5} />
-                                                <FileItem name="config/" level={5} />
-                                                <FileItem name="util/" level={5} />
+                                                <FileItem name="controller/" level={5}/>
+                                                <FileItem name="service/" level={5}/>
+                                                <FileItem name="repository/" level={5}/>
+                                                <FileItem name="model/" level={5}/>
+                                                <FileItem name="config/" level={5}/>
+                                                <FileItem name="util/" level={5}/>
                                             </FolderItem>
                                         </FolderItem>
                                         <FolderItem
@@ -290,15 +311,15 @@ export default function BKMDocs() {
                                             onToggle={() => toggleFolder('resources')}
                                             level={3}
                                         >
-                                            <FileItem name="static/" level={4} />
-                                            <FileItem name="templates/" level={4} />
-                                            <FileItem name="application.yml" level={4} />
+                                            <FileItem name="static/" level={4}/>
+                                            <FileItem name="templates/" level={4}/>
+                                            <FileItem name="application.yml" level={4}/>
                                         </FolderItem>
                                     </FolderItem>
                                 </FolderItem>
-                                <FileItem name="backups/" level={1} />
-                                <FileItem name="logs/" level={1} />
-                                <FileItem name="database/" level={1} />
+                                <FileItem name="backups/" level={1}/>
+                                <FileItem name="logs/" level={1}/>
+                                <FileItem name="database/" level={1}/>
                             </FolderItem>
                         </div>
                     </div>
@@ -308,7 +329,7 @@ export default function BKMDocs() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <div className="flex items-center space-x-2 mb-2">
-                                    <Layers className="w-4 h-4 text-gray-900" />
+                                    <Layers className="w-4 h-4 text-gray-900"/>
                                     <p className="text-gray-900 font-medium">Controller</p>
                                 </div>
                                 <p className="text-gray-600 text-sm">Gerencia requisições HTTP e coordena operações</p>
@@ -316,7 +337,7 @@ export default function BKMDocs() {
 
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <div className="flex items-center space-x-2 mb-2">
-                                    <Settings className="w-4 h-4 text-gray-900" />
+                                    <Settings className="w-4 h-4 text-gray-900"/>
                                     <p className="text-gray-900 font-medium">Service</p>
                                 </div>
                                 <p className="text-gray-600 text-sm">Lógica de negócio e motor de backup</p>
@@ -324,7 +345,7 @@ export default function BKMDocs() {
 
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <div className="flex items-center space-x-2 mb-2">
-                                    <HardDrive className="w-4 h-4 text-gray-900" />
+                                    <HardDrive className="w-4 h-4 text-gray-900"/>
                                     <p className="text-gray-900 font-medium">Repository</p>
                                 </div>
                                 <p className="text-gray-600 text-sm">Operações de persistência no banco de dados</p>
@@ -332,7 +353,7 @@ export default function BKMDocs() {
 
                             <div className="border border-gray-200 rounded-lg p-4">
                                 <div className="flex items-center space-x-2 mb-2">
-                                    <Box className="w-4 h-4 text-gray-900" />
+                                    <Box className="w-4 h-4 text-gray-900"/>
                                     <p className="text-gray-900 font-medium">Model</p>
                                 </div>
                                 <p className="text-gray-600 text-sm">Entidades do domínio</p>
@@ -351,20 +372,21 @@ export default function BKMDocs() {
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center space-x-2">
-                                <FolderTree className="w-5 h-5 text-gray-900" />
+                                <FolderTree className="w-5 h-5 text-gray-900"/>
                                 <h3 className="text-sm font-semibold text-gray-900">Origens</h3>
                             </div>
                             <button
                                 onClick={addSource}
                                 className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
                             >
-                                <Plus className="w-4 h-4" />
+                                <Plus className="w-4 h-4"/>
                                 <span>Adicionar</span>
                             </button>
                         </div>
                         <div className="space-y-2">
                             {sources.length === 0 ? (
-                                <div className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
+                                <div
+                                    className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
                                     Nenhuma origem selecionada
                                 </div>
                             ) : (
@@ -385,7 +407,7 @@ export default function BKMDocs() {
                                             onClick={() => removeSource(source.id)}
                                             className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-4 h-4"/>
                                         </button>
                                     </div>
                                 ))
@@ -397,20 +419,21 @@ export default function BKMDocs() {
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center space-x-2">
-                                <Database className="w-5 h-5 text-gray-900" />
+                                <Database className="w-5 h-5 text-gray-900"/>
                                 <h3 className="text-sm font-semibold text-gray-900">Destinos</h3>
                             </div>
                             <button
                                 onClick={addDestination}
                                 className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
                             >
-                                <Plus className="w-4 h-4" />
+                                <Plus className="w-4 h-4"/>
                                 <span>Adicionar</span>
                             </button>
                         </div>
                         <div className="space-y-2">
                             {destinations.length === 0 ? (
-                                <div className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
+                                <div
+                                    className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
                                     Nenhum destino selecionado
                                 </div>
                             ) : (
@@ -431,7 +454,7 @@ export default function BKMDocs() {
                                             onClick={() => removeDestination(dest.id)}
                                             className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-4 h-4"/>
                                         </button>
                                     </div>
                                 ))
@@ -445,7 +468,7 @@ export default function BKMDocs() {
                             onClick={executeBackup}
                             className="flex items-center space-x-2 px-6 py-2.5 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors"
                         >
-                            <Play className="w-4 h-4" />
+                            <Play className="w-4 h-4"/>
                             <span>Executar Backup</span>
                         </button>
                     </div>
@@ -453,7 +476,7 @@ export default function BKMDocs() {
                     {/* Logs */}
                     <div>
                         <div className="flex items-center space-x-2 mb-4">
-                            <Clock className="w-5 h-5 text-gray-900" />
+                            <Clock className="w-5 h-5 text-gray-900"/>
                             <h3 className="text-sm font-semibold text-gray-900">Histórico</h3>
                         </div>
                         <div className="border border-gray-200 rounded">
@@ -485,60 +508,29 @@ export default function BKMDocs() {
         }
     };
 
+    const currentSection = sections[activeSection] ?? Object.values(sections)[0];
     return (
         <div className="flex flex-col min-h-screen bg-white">
             {/* Top Bar */}
-            <header className="border-b border-gray-200 bg-white sticky top-0 z-50">
-                <div className="flex items-center justify-between px-6 py-3">
-                    <div className="flex items-center space-x-2">
-                        <Database className="w-5 h-5 text-gray-900" />
-                        <span className="text-sm font-semibold text-gray-900">Backup Manager (BKM)</span>
-                    </div>
-                    <a
-                        href="https://github.com/devluiscavalcante/backup-manager"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
-                    >
-                        <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
-                            <Github className="w-4 h-4 text-white" />
-                        </div>
-                        <span className="text-sm">BKM on Github</span>
-                    </a>
-                </div>
-            </header>
+            <Header/>
+
 
             <div className="flex flex-1">
                 {/* Sidebar */}
-                <aside className="w-56 border-r border-gray-200 p-6 flex flex-col">
-                    <nav className="flex-1 space-y-0.5">
-                        {Object.entries(sections).map(([key, section]) => {
-                            const Icon = section.icon;
-                            return (
-                                <button
-                                    key={key}
-                                    onClick={() => setActiveSection(key)}
-                                    className={`w-full text-left px-2 py-1.5 rounded text-sm transition-colors flex items-center space-x-2 ${
-                                        activeSection === key
-                                            ? 'bg-gray-100 text-gray-900'
-                                            : 'text-gray-600 hover:text-gray-900'
-                                    }`}
-                                >
-                                    <Icon className="w-4 h-4" />
-                                    <span>{section.title}</span>
-                                </button>
-                            );
-                        })}
-                    </nav>
-                </aside>
+                <Sidebar
+                    sections={sections}
+                    activeSection={activeSection}
+                    onSelect={setActiveSection}
+                />
+
 
                 {/* Main Content */}
                 <main className="flex-1">
                     <div className="max-w-4xl mx-auto px-8 py-16">
                         <h2 className="text-2xl font-semibold text-gray-900 mb-8">
-                            {sections[activeSection].title}
+                            {currentSection.title}
                         </h2>
-                        {sections[activeSection].content}
+                        {currentSection.content}
                     </div>
                 </main>
             </div>
