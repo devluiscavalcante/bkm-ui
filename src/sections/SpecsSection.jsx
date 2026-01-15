@@ -40,10 +40,9 @@ export default function SpecsSection() {
             <div>
                 <h3 className="text-sm font-semibold text-gray-900 mb-3">REST API</h3>
                 <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm text-gray-700 space-y-1">
-                    <div>POST /api/backup/execute</div>
+                    <div>POST /api/backup/start</div>
                     <div>GET /api/backup/history</div>
-                    <div>GET /api/backup/status</div>
-                    <div>PUT /api/config</div>
+                    <div>GET /api/backup/progress</div>
                 </div>
             </div>
         </div>
