@@ -20,6 +20,7 @@ import Header from './components/layout/Header';
 import Sidebar from './components/layout/Sidebar';
 import InitialSection from './sections/InitialSection';
 import AboutSection from './sections/AboutSection';
+import SpecsSection from "./sections/SpecsSection.jsx";
 
 
 export default function BKMDocs() {
@@ -81,57 +82,11 @@ export default function BKMDocs() {
             content: <AboutSection/>
         },
 
-        especificacoes: {
-            title: 'Especificações',
+        Specs: {
+            title: 'Specs',
             icon: Settings,
-            content: (
-                <div className="space-y-8">
-                    <div>
-                        <div className="flex items-center space-x-2 mb-4">
-                            <Server className="w-5 h-5 text-gray-900"/>
-                            <h3 className="text-sm font-semibold text-gray-900">Backend</h3>
-                        </div>
-                        <ul className="space-y-2 text-gray-700 pl-7 list-disc">
-                            <li>Java 17+ como linguagem principal</li>
-                            <li>Spring Boot como framework web</li>
-                            <li>SQLite para banco de dados embarcado</li>
-                            <li>Maven para gerenciamento de dependências</li>
-                        </ul>
-                    </div>
+            content: <SpecsSection/>
 
-                    <div>
-                        <div className="flex items-center space-x-2 mb-4">
-                            <Code className="w-5 h-5 text-gray-900"/>
-                            <h3 className="text-sm font-semibold text-gray-900">Frontend</h3>
-                        </div>
-                        <ul className="space-y-2 text-gray-700 pl-7 list-disc">
-                            <li>HTML5 e CSS3 para estrutura e estilo</li>
-                            <li>JavaScript para interatividade</li>
-                            <li>Design minimalista e responsivo</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-3">Requisitos</h3>
-                        <ul className="space-y-2 text-gray-700 list-disc pl-5">
-                            <li>Java Runtime Environment 17 ou superior</li>
-                            <li>Mínimo de 512MB de RAM</li>
-                            <li>Compatível com Windows, Linux e macOS</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-3">API REST</h3>
-                        <div
-                            className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm text-gray-700 space-y-1">
-                            <div>POST /api/backup/execute</div>
-                            <div>GET /api/backup/history</div>
-                            <div>GET /api/backup/status</div>
-                            <div>PUT /api/config</div>
-                        </div>
-                    </div>
-                </div>
-            )
         },
         estrutura: {
             title: 'Estrutura',
