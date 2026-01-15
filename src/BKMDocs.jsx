@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronRight, Database, Settings, FileText, FolderTree, Github, Zap, Shield, Package, Code, Layers, Server, HardDrive, Box, Play, ChevronDown, Folder, File, Plus, Trash2, Clock } from 'lucide-react';
+import FolderItem from './components/tree/FolderItem';
+import FileItem from './components/tree/FileItem';
 
 export default function BKMDocs() {
     const [activeSection, setActiveSection] = useState('inicio');
@@ -46,32 +48,6 @@ export default function BKMDocs() {
         }]);
     };
 
-    const FolderItem = ({ name, path, isExpanded, onToggle, level = 0, children }) => (
-        <div>
-            <div
-                className="flex items-center space-x-1 py-1 cursor-pointer hover:bg-gray-100 rounded px-1"
-                style={{ paddingLeft: `${level * 16}px` }}
-                onClick={onToggle}
-            >
-                <ChevronRight className={`w-3 h-3 text-gray-600 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
-                <Folder className="w-4 h-4 text-gray-700" />
-                <span className="text-sm text-gray-900 font-mono">{name}</span>
-            </div>
-            {isExpanded && children && (
-                <div>{children}</div>
-            )}
-        </div>
-    );
-
-    const FileItem = ({ name, level = 0 }) => (
-        <div
-            className="flex items-center space-x-1 py-1 px-1"
-            style={{ paddingLeft: `${level * 16 + 16}px` }}
-        >
-            <File className="w-4 h-4 text-gray-600" />
-            <span className="text-sm text-gray-700 font-mono">{name}</span>
-        </div>
-    );
 
     const sections = {
         inicio: {
