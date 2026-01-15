@@ -7,8 +7,7 @@ export function StructuresSection({expandedFolders, toggleFolder}) {
     return (
         <div className="space-y-8">
             <p className="text-gray-700 leading-relaxed">
-                Arquitetura em camadas bem definida para manutenibilidade e escalabilidade.
-            </p>
+                Well-defined layered architecture for maintainability and scalability.            </p>
 
             {/* Estrutura de pastas */}
             <div>
@@ -41,18 +40,15 @@ export function StructuresSection({expandedFolders, toggleFolder}) {
                                     level={3}
                                 >
                                     <FolderItem
-                                        name="com/bkm"
+                                        name="com.backup_manager"
                                         path="bkm"
                                         isExpanded={expandedFolders.includes('bkm')}
                                         onToggle={() => toggleFolder('bkm')}
                                         level={4}
                                     >
-                                        <FileItem name="controller/" level={5}/>
-                                        <FileItem name="service/" level={5}/>
-                                        <FileItem name="repository/" level={5}/>
-                                        <FileItem name="model/" level={5}/>
-                                        <FileItem name="config/" level={5}/>
-                                        <FileItem name="util/" level={5}/>
+                                        <FolderItem name="application" level={5}/>
+                                        <FileItem name="domain/" level={5}/>
+                                        <FileItem name="infrastructure/" level={5}/>
                                     </FolderItem>
                                 </FolderItem>
                                 <FolderItem
