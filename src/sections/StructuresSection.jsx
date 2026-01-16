@@ -81,7 +81,7 @@ export function StructuresSection({expandedFolders, toggleFolder}) {
                             <p className="text-gray-900 font-medium">Controller</p>
                         </div>
                         <p className="text-gray-600 text-sm">
-                            Gerencia requisições HTTP e coordena operações
+                            Manage HTTP requests and coordinate operations.
                         </p>
                     </div>
 
@@ -90,7 +90,7 @@ export function StructuresSection({expandedFolders, toggleFolder}) {
                             <Settings className="w-4 h-4 text-gray-900"/>
                             <p className="text-gray-900 font-medium">Service</p>
                         </div>
-                        <p className="text-gray-600 text-sm">Lógica de negócio e motor de backup</p>
+                        <p className="text-gray-600 text-sm">Business logic and backup engine</p>
                     </div>
 
                     <div className="border border-gray-200 rounded-lg p-4">
@@ -98,7 +98,8 @@ export function StructuresSection({expandedFolders, toggleFolder}) {
                             <HardDrive className="w-4 h-4 text-gray-900"/>
                             <p className="text-gray-900 font-medium">Repository</p>
                         </div>
-                        <p className="text-gray-600 text-sm">Operações de persistência no banco de dados</p>
+                        <p className="text-gray-600 text-sm">Persistence operations in the database
+                        </p>
                     </div>
 
                     <div className="border border-gray-200 rounded-lg p-4">
@@ -106,7 +107,7 @@ export function StructuresSection({expandedFolders, toggleFolder}) {
                             <Box className="w-4 h-4 text-gray-900"/>
                             <p className="text-gray-900 font-medium">Model</p>
                         </div>
-                        <p className="text-gray-600 text-sm">Entidades do domínio</p>
+                        <p className="text-gray-600 text-sm">Domain Entities</p>
                     </div>
                 </div>
             </div>
