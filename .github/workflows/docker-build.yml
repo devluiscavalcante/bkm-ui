@@ -22,5 +22,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
-            ghcr.io/${{ github.repository }}:latest
+               ghcr.io/devluiscavalcante/bkm-ui:latest
