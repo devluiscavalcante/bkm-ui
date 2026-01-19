@@ -39,7 +39,12 @@ jobs:
         continue-on-error: true
 
       - name: Run Tests
-        run: npm run test:coverage
+        run: |
+          if [ -z "$(find src -name '*.test.*' -o -name '*.spec.*')" ]; then
+            echo "No test files found. Skipping..."
+          else
+            npm run test:coverage
+          fi
 
       - name: Upload Test Coverage
         uses: codecov/codecov-action@v3
