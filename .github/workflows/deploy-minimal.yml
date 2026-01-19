@@ -1,0 +1,42 @@
+name: Deploy Minimal
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: npm ci
+
+      - name: Build with base path
+        run: npm run build -- --base=/bkm-ui/
+
+      - name: Prepare deploy
+        run: |
+          cd dist
+          echo '/bkm-ui/' > CNAME  # Força base path
+          echo '' > .nojekyll
+
+      - name: Deploy via GitHub API
+        run: |
+          cd dist
+          git init
+          git add .
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git commit -m "Deploy $(date)"
+          git branch -M gh-pages
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/devluiscavalcante/bkm-ui.git
+          git push -f origin gh-pages
