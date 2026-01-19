@@ -22,4 +22,4 @@ jobs:
           context: .
           push: true
           tags: |
-               ghcr.io/devluiscavalcante/bkm-ui:latest
+            s|ghcr.io/devluiscavalcante/bkm-ui|ghcr.io/devluiscavalcante/bkm-ui|g

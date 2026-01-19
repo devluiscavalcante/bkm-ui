@@ -60,7 +60,7 @@ jobs:
         run: npm run build
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4  # ← ATUALIZADO PARA v4
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: build-${{ github.ref_name }}-${{ matrix.node-version }}
