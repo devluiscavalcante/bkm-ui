@@ -4,7 +4,6 @@ import { Search, Download, AlertCircle, Info, CheckCircle, XCircle, FileText } f
 export default function LogsSection({ logs }) {
     const [filter, setFilter] = useState('all');
 
-    // Garante que logs seja um array
     const logsArray = Array.isArray(logs) ? logs : [];
 
     const getLevelIcon = (level) => {
@@ -42,13 +41,12 @@ export default function LogsSection({ logs }) {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Logs do Sistema</h1>
-                    <p className="text-gray-600">Registro de todas as operações de backup</p>
+                    <p className="text-gray-600">Log of all backup operations</p>
                 </div>
                 <div className="flex space-x-3">
                     <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                         <Download className="w-4 h-4" />
-                        <span>Exportar</span>
+                        <span>Export</span>
                     </button>
                 </div>
             </div>
@@ -60,7 +58,7 @@ export default function LogsSection({ logs }) {
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                         <input
                             type="text"
-                            placeholder="Buscar em logs..."
+                            placeholder="Search the logs..."
                             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
@@ -70,25 +68,25 @@ export default function LogsSection({ logs }) {
                         onClick={() => setFilter('all')}
                         className={`px-3 py-1.5 text-sm rounded-lg ${filter === 'all' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                     >
-                        Todos
+                        All
                     </button>
                     <button
                         onClick={() => setFilter('success')}
                         className={`px-3 py-1.5 text-sm rounded-lg ${filter === 'success' ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                     >
-                        Sucesso
+                        Success
                     </button>
                     <button
                         onClick={() => setFilter('warning')}
                         className={`px-3 py-1.5 text-sm rounded-lg ${filter === 'warning' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                     >
-                        Aviso
+                        Warnings
                     </button>
                     <button
                         onClick={() => setFilter('error')}
                         className={`px-3 py-1.5 text-sm rounded-lg ${filter === 'error' ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                     >
-                        Erro
+                        Error
                     </button>
                 </div>
             </div>
@@ -99,12 +97,12 @@ export default function LogsSection({ logs }) {
                     <div className="text-center py-12">
                         <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-gray-900 mb-2">
-                            {logsArray.length === 0 ? 'Nenhum log encontrado' : 'Nenhum log com este filtro'}
+                            {logsArray.length === 0 ? 'No logs found' : 'No logs matching this filter.'}
                         </h3>
                         <p className="text-gray-500">
                             {logsArray.length === 0
-                                ? 'Execute um backup para ver os logs aqui.'
-                                : 'Tente outro filtro.'
+                                ? 'Perform a backup to view the logs here.'
+                                : 'Try another filter.'
                             }
                         </p>
                     </div>
