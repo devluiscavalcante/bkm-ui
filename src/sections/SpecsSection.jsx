@@ -29,15 +29,6 @@ export default function SpecsSection() {
             </div>
 
             <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">Requirements</h3>
-                <ul className="space-y-2 text-gray-700 list-disc pl-5">
-                    <li>Java Runtime Environment 17 or higher</li>
-                    <li>Minimum of 512MB RAM</li>
-                    <li>Compatible with Windows, Linux, and macOS</li>
-                </ul>
-            </div>
-
-            <div>
                 <h3 className="text-sm font-semibold text-gray-900 mb-3">REST API</h3>
                 <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm text-gray-700 space-y-1">
                     <div>POST /api/backup/start</div>
