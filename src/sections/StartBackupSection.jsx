@@ -30,7 +30,7 @@ export default function StartBackupSection({
         // Simular o backup com 10 arquivos
         const simulatedTotalFiles = 10;
         setTotalFiles(simulatedTotalFiles);
-        setCurrentFile('Iniciando backup...');
+        setCurrentFile('Starting backup...');
 
         let currentProgress = 0;
         let currentFileIndex = 0;
@@ -60,7 +60,7 @@ export default function StartBackupSection({
 
             if (currentProgress >= 100) {
                 clearInterval(interval);
-                setCurrentFile('Finalizando backup...');
+                setCurrentFile('Starting backup...');
 
                 // Mantém o modal visível por mais 2 segundos antes de fechar
                 setTimeout(() => {
@@ -88,28 +88,28 @@ export default function StartBackupSection({
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-2">
                             <FolderTree className="w-5 h-5 text-gray-900"/>
-                            <h3 className="text-sm font-semibold text-gray-900">Origens</h3>
+                            <h3 className="text-sm font-semibold text-gray-900">Origins</h3>
                         </div>
                         <button
                             onClick={addSource}
                             className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
                         >
                             <Plus className="w-4 h-4"/>
-                            <span>Adicionar</span>
+                            <span>To Add</span>
                         </button>
                     </div>
                     <div className="space-y-2">
                         {sources.length === 0 ? (
                             <div
                                 className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
-                                Nenhuma origem selecionada
+                                No origin selected
                             </div>
                         ) : (
                             sources.map(source => (
                                 <div key={source.id} className="flex items-center space-x-2">
                                     <input
                                         type="text"
-                                        placeholder="/caminho/para/origem"
+                                        placeholder="/path/to/origin"
                                         className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-gray-400"
                                         value={source.path}
                                         onChange={(e) => {
@@ -135,28 +135,28 @@ export default function StartBackupSection({
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-2">
                             <Database className="w-5 h-5 text-gray-900"/>
-                            <h3 className="text-sm font-semibold text-gray-900">Destinos</h3>
+                            <h3 className="text-sm font-semibold text-gray-900">Destinations</h3>
                         </div>
                         <button
                             onClick={addDestination}
                             className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
                         >
                             <Plus className="w-4 h-4"/>
-                            <span>Adicionar</span>
+                            <span>To Add</span>
                         </button>
                     </div>
                     <div className="space-y-2">
                         {destinations.length === 0 ? (
                             <div
                                 className="text-center py-8 text-gray-500 text-sm border border-gray-200 rounded bg-gray-50">
-                                Nenhum destino selecionado
+                                No destination selected
                             </div>
                         ) : (
                             destinations.map(dest => (
                                 <div key={dest.id} className="flex items-center space-x-2">
                                     <input
                                         type="text"
-                                        placeholder="/caminho/para/destino"
+                                        placeholder="/path/to/destination"
                                         className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-gray-400"
                                         value={dest.path}
                                         onChange={(e) => {
@@ -193,10 +193,10 @@ export default function StartBackupSection({
                         <Play className="w-4 h-4"/>
                         <span>
                             {isBackupRunning
-                                ? 'Backup em Andamento...'
+                                ? 'Backup in progress...'
                                 : (sources.length === 0 || destinations.length === 0)
-                                    ? 'Adicione origens e destinos'
-                                    : 'Executar Backup'
+                                    ? 'Add origins and destinations.'
+                                    : 'Run Backup'
                             }
                         </span>
                     </button>
