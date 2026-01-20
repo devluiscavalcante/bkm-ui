@@ -2,10 +2,10 @@ name: Preview Deployment
 
 on:
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  deploy-preview:
+  preview:
     runs-on: ubuntu-latest
     if: github.event.pull_request.head.repo.full_name == github.repository
 

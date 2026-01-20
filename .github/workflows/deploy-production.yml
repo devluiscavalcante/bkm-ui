@@ -1,14 +1,16 @@
-name: Deploy Minimal
+name: Deploy Production
 
 on:
   push:
-    branches: [master]
+    tags: ['v*']
+  release:
+    types: [published]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
       - uses: actions/checkout@v4
 
@@ -16,27 +18,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
       - name: Build with base path
         run: npm run build -- --base=/bkm-ui/
 
-      - name: Prepare deploy
+      - name: Deploy to GitHub Pages
         run: |
           cd dist
-          echo '/bkm-ui/' > CNAME  # Força base path
           echo '' > .nojekyll
-
-      - name: Deploy via GitHub API
-        run: |
-          cd dist
           git init
           git add .
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git commit -m "Deploy $(date)"
+          git commit -m "Deploy ${{ github.ref_name }} - $(date +'%Y-%m-%d %H:%M')"
           git branch -M gh-pages
           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/devluiscavalcante/bkm-ui.git
           git push -f origin gh-pages
+
+      - name: Create Release Comment
+        if: github.event_name == 'release'
+        run: |
+          echo "Production deployed: https://devluiscavalcante.github.io/bkm-ui/"
+          echo "Version: ${{ github.event.release.tag_name }}"
