@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Database, FileText, FolderTree, Play, Settings} from 'lucide-react';
+import {Database, FileText, FolderTree, History, List, Play, Settings} from 'lucide-react';
 import Header from './components/layout/Header';
 import Sidebar from './components/layout/Sidebar';
 import InitialSection from './sections/InitialSection';
@@ -7,6 +7,8 @@ import AboutSection from './sections/AboutSection';
 import SpecsSection from "./sections/SpecsSection";
 import {StructuresSection} from './sections/StructuresSection';
 import StartBackupSection from './sections/StartBackupSection';
+import HistorySection from './sections/HistorySection';
+import LogsSection from './sections/LogsSection';
 
 export default function BKMDocs() {
     const [activeSection, setActiveSection] = useState('inicio');
@@ -14,6 +16,7 @@ export default function BKMDocs() {
     const [sources, setSources] = useState([]);
     const [destinations, setDestinations] = useState([]);
     const [logs, setLogs] = useState([]);
+    const [backupHistory, setBackupHistory] = useState([]);
 
     const toggleFolder = (path) => {
         setExpandedFolders(prev =>
@@ -44,34 +47,44 @@ export default function BKMDocs() {
             alert('Adicione ao menos uma origem e um destino');
             return;
         }
+
         const timestamp = new Date().toLocaleString();
-        setLogs([...logs, {
+        const newLog = {
             id: Date.now(),
             timestamp,
-            status: 'success',
+            level: 'success',
             message: `Backup executado: ${sources.length} origem(ns) → ${destinations.length} destino(s)`
-        }]);
+        };
+
+        const newBackup = {
+            id: Date.now(),
+            name: `Backup ${timestamp}`,
+            date: timestamp,
+            size: `${(sources.length * 0.5).toFixed(1)} GB`, // Simulado
+            status: 'completed',
+            files: sources.length * 100, // Simulado
+            duration: `${sources.length + destinations.length}m`
+        };
+
+        setLogs([...logs, newLog]);
+        setBackupHistory([newBackup, ...backupHistory]);
     };
 
-
     const sections = {
-        Initial: {
+        inicio: {
             title: 'Home',
             icon: Database,
             content: <InitialSection/>
         },
-
-        About: {
+        sobre: {
             title: 'About',
             icon: FileText,
             content: <AboutSection/>
         },
-
-        Specs: {
+        especificacoes: {
             title: 'Specs',
             icon: Settings,
             content: <SpecsSection/>
-
         },
         estrutura: {
             title: 'Structure',
@@ -79,7 +92,7 @@ export default function BKMDocs() {
             content: <StructuresSection expandedFolders={expandedFolders} toggleFolder={toggleFolder}/>
         },
         backup: {
-            title: 'Executar Backup',
+            title: 'Backup',
             icon: Play,
             content: <StartBackupSection
                 sources={sources}
@@ -93,29 +106,34 @@ export default function BKMDocs() {
                 setSources={setSources}
                 setDestinations={setDestinations}
             />
+        },
+        historico: {
+            title: 'History',
+            icon: History,
+            content: <HistorySection history={backupHistory}/>
+        },
+        logs: {
+            title: 'Logs',
+            icon: List,
+            content: <LogsSection logs={logs}/>
         }
     };
 
     const currentSection = sections[activeSection] ?? Object.values(sections)[0];
     return (
         <div className="flex flex-col min-h-screen bg-white">
-            {/* Top Bar */}
             <Header/>
 
-
             <div className="flex flex-1">
-                {/* Sidebar */}
                 <Sidebar
                     sections={sections}
                     activeSection={activeSection}
                     onSelect={setActiveSection}
                 />
 
-
-                {/* Main Content */}
-                <main className="flex-1">
-                    <div className="max-w-4xl mx-auto px-8 py-16">
-                        <h2 className="text-2xl font-semibold text-gray-900 mb-8">
+                <main className="flex-1 overflow-auto">
+                    <div className="max-w-6xl mx-auto px-8 py-8">
+                        <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                             {currentSection.title}
                         </h2>
                         {currentSection.content}
