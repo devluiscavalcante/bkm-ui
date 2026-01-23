@@ -42,31 +42,49 @@ export default function BKMDocs() {
         setDestinations(destinations.filter(d => d.id !== id));
     };
 
-    const executeBackup = () => {
-        if (sources.length === 0 || destinations.length === 0) {
-            alert('Adicione ao menos uma origem e um destino');
+    const executeBackup = (backupData = null) => {
+        if (!backupData && (sources.length === 0 || destinations.length === 0)) {
+            alert('Please add at least one origin and one destination');
             return;
         }
 
         const timestamp = new Date().toLocaleString();
-        const newLog = {
-            id: Date.now(),
-            timestamp,
-            level: 'success',
-            message: `Backup executado: ${sources.length} origem(ns) → ${destinations.length} destino(s)`
-        };
 
-        const newBackup = {
-            id: Date.now(),
-            name: `Backup ${timestamp}`,
-            date: timestamp,
-            size: `${(sources.length * 0.5).toFixed(1)} GB`, // Simulado
-            status: 'completed',
-            files: sources.length * 100, // Simulado
-            duration: `${sources.length + destinations.length}m`
-        };
+        let newBackup;
+        let newLog;
 
-        setLogs([...logs, newLog]);
+        if (backupData) {
+            // Usa os dados do backup passados (cancelado ou outro status)
+            newBackup = backupData;
+            newLog = {
+                id: Date.now(),
+                timestamp,
+                level: backupData.status === 'cancelled' ? 'warning' : 'success',
+                message: backupData.status === 'cancelled'
+                    ? `Backup cancelled at ${backupData.files * 10}% progress`
+                    : `Backup executed: ${sources.length} origin(s) → ${destinations.length} destination(s)`
+            };
+        } else {
+            // Cria um backup normal (concluído)
+            newBackup = {
+                id: Date.now(),
+                name: `Backup ${timestamp}`,
+                date: timestamp,
+                size: `${(sources.length * 0.5).toFixed(1)} GB`,
+                status: 'completed',
+                files: sources.length * 100,
+                duration: `${sources.length + destinations.length}m`
+            };
+
+            newLog = {
+                id: Date.now(),
+                timestamp,
+                level: 'success',
+                message: `Backup executed: ${sources.length} origin(s) → ${destinations.length} destination(s)`
+            };
+        }
+
+        setLogs([newLog, ...logs]);
         setBackupHistory([newBackup, ...backupHistory]);
     };
 
@@ -97,7 +115,6 @@ export default function BKMDocs() {
             content: <StartBackupSection
                 sources={sources}
                 destinations={destinations}
-                logs={logs}
                 addSource={addSource}
                 removeSource={removeSource}
                 addDestination={addDestination}
