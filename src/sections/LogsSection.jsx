@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
-import { Search, Download, AlertCircle, Info, CheckCircle, XCircle, FileText } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Download, AlertCircle, Info, CheckCircle, XCircle, FileText, RefreshCw } from 'lucide-react';
+import { backupApi } from '../services/backupApi';
 
-export default function LogsSection({ logs }) {
+export default function LogsSection() {
+    const [logs, setLogs] = useState([]);
     const [filter, setFilter] = useState('all');
+    const [search, setSearch] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const logsArray = Array.isArray(logs) ? logs : [];
+    const loadLogs = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const data = await backupApi.getLogs();
+            setLogs(data);
+        } catch (err) {
+            setError('Failed to load logs');
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadLogs();
+
+        const interval = setInterval(loadLogs, 10000);
+        return () => clearInterval(interval);
+    }, []);
 
     const getLevelIcon = (level) => {
         switch (level) {
@@ -33,25 +58,60 @@ export default function LogsSection({ logs }) {
     };
 
     const filteredLogs = filter === 'all'
-        ? logsArray
-        : logsArray.filter(log => log && log.level === filter);
+        ? logs
+        : logs.filter(log => log && log.level === filter);
+
+    const searchedLogs = search
+        ? filteredLogs.filter(log =>
+            log.message.toLowerCase().includes(search.toLowerCase()) ||
+            log.source.toLowerCase().includes(search.toLowerCase())
+        )
+        : filteredLogs;
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="text-gray-600">Loading logs...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="text-center py-12">
+                <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{error}</h3>
+                <button
+                    onClick={loadLogs}
+                    className="mt-4 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
-            {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-gray-600">Log of all backup operations</p>
                 </div>
                 <div className="flex space-x-3">
+                    <button
+                        onClick={loadLogs}
+                        className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                    >
+                        <RefreshCw className="w-4 h-4 text-gray-600" />
+                        <span className="text-gray-700">Refresh</span>
+                    </button>
                     <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <Download className="w-4 h-4" />
-                        <span>Export</span>
+                        <Download className="w-4 h-4 text-gray-600" />
+                        <span className="text-gray-700">Export</span>
                     </button>
                 </div>
             </div>
 
-            {/* Filters and Search */}
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                     <div className="relative">
@@ -60,6 +120,8 @@ export default function LogsSection({ logs }) {
                             type="text"
                             placeholder="Search the logs..."
                             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
                 </div>
@@ -91,44 +153,42 @@ export default function LogsSection({ logs }) {
                 </div>
             </div>
 
-            {/* Logs List */}
             <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                {filteredLogs.length === 0 ? (
+                {searchedLogs.length === 0 ? (
                     <div className="text-center py-12">
                         <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-gray-900 mb-2">
-                            {logsArray.length === 0 ? 'No logs found' : 'No logs matching this filter.'}
+                            {logs.length === 0 ? 'No logs found' : 'No logs matching this filter.'}
                         </h3>
                         <p className="text-gray-500">
-                            {logsArray.length === 0
+                            {logs.length === 0
                                 ? 'Perform a backup to view the logs here.'
-                                : 'Try another filter.'
+                                : 'Try another filter or search term.'
                             }
                         </p>
                     </div>
                 ) : (
                     <div className="divide-y divide-gray-200">
-                        {filteredLogs.map((log) => (
-                            log && (
-                                <div key={log.id} className="p-4 hover:bg-gray-50">
-                                    <div className="flex items-start space-x-3">
-                                        {getLevelIcon(log.level || 'info')}
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-medium text-gray-900">
-                                                    {log.message || 'Log sem mensagem'}
-                                                </span>
-                                                <span className={`px-2 py-1 text-xs rounded-full ${getLevelColor(log.level || 'info')}`}>
-                                                    {(log.level || 'info').toUpperCase()}
-                                                </span>
-                                            </div>
-                                            <div className="mt-1">
-                                                <span className="text-sm text-gray-500">{log.timestamp || 'Data não disponível'}</span>
-                                            </div>
+                        {searchedLogs.map((log) => (
+                            <div key={log.id} className="p-4 hover:bg-gray-50">
+                                <div className="flex items-start space-x-3">
+                                    {getLevelIcon(log.level || 'info')}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-sm font-medium text-gray-900">
+                                                {log.message || 'Log message not available'}
+                                            </span>
+                                            <span className={`px-2 py-1 text-xs rounded-full ${getLevelColor(log.level || 'info')}`}>
+                                                {(log.level || 'info').toUpperCase()}
+                                            </span>
+                                        </div>
+                                        <div className="mt-1 flex items-center space-x-4">
+                                            <span className="text-sm text-gray-500">{log.timestamp}</span>
+                                            <span className="text-sm text-gray-400">Source: {log.source}</span>
                                         </div>
                                     </div>
                                 </div>
-                            )
+                            </div>
                         ))}
                     </div>
                 )}
