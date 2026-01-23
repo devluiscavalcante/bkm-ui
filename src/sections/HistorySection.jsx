@@ -12,7 +12,7 @@ export default function HistorySection({ history }) {
             case 'failed':
                 return <AlertCircle className="w-5 h-5 text-gray-600" />;
             default:
-                return <Clock className="w-5 h-5 text-gray-600" />; // Cinza
+                return <Clock className="w-5 h-5 text-gray-600" />;
         }
     };
 
@@ -38,7 +38,7 @@ export default function HistorySection({ history }) {
                         <Calendar className="w-4 h-4 text-gray-600" />
                         <span className="text-gray-700">Filter</span>
                     </button>
-                    <button className="flex items-center space-x-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                    <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                         <Download className="w-4 h-4" />
                         <span>Export</span>
                     </button>
@@ -101,9 +101,9 @@ export default function HistorySection({ history }) {
                             <thead className="bg-gray-50">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Files</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             </tr>
@@ -113,10 +113,10 @@ export default function HistorySection({ history }) {
                                 backup && (
                                     <tr key={backup.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm font-medium text-gray-900">{backup.name || 'Backup sem nome'}</div>
+                                            <div className="text-sm font-medium text-gray-900">{backup.name || 'Unnamed backup'}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-600">{backup.date || 'Data não disponível'}</div>
+                                            <div className="text-sm text-gray-600">{backup.date || 'Date not available'}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-600">{backup.size || '0 GB'}</div>
@@ -131,8 +131,8 @@ export default function HistorySection({ history }) {
                                             <div className="flex items-center">
                                                 {getStatusIcon(backup.status || 'completed')}
                                                 <span className={`ml-2 px-2 py-1 text-xs rounded-full ${getStatusColor(backup.status || 'completed')}`}>
-                                                        {backup.status === 'completed' ? 'Completed' : 'Failed'}
-                                                    </span>
+                                                    {backup.status === 'completed' ? 'Completed' : 'Failed'}
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>

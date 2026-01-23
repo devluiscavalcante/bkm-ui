@@ -138,8 +138,7 @@ export default function StartBackupSection({
             // Verifica se terminou
             if (newProgress >= 100) {
                 clearInterval(interval);
-                backupIntervalRef.current = null;
-                setCurrentFile('Finalizing backup...');
+                setCurrentFile('Starting backup...');
 
                 // Mantém o modal visível por mais 2 segundos antes de fechar
                 setTimeout(() => {
@@ -270,7 +269,7 @@ export default function StartBackupSection({
                             {isBackupRunning
                                 ? 'Backup in progress...'
                                 : (sources.length === 0 || destinations.length === 0)
-                                    ? 'Add origins and destinations'
+                                    ? 'Add origins and destinations.'
                                     : 'Run Backup'
                             }
                         </span>
