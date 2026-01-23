@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Database, FolderTree, Play, Plus, Trash2} from 'lucide-react';
-import {BackupProgressModal} from './BackupProgressModal';
+import React, { useState, useRef } from 'react';
+import { Database, FolderTree, Play, Plus, Trash2 } from 'lucide-react';
+import { BackupProgressModal } from './BackupProgressModal';
 
 export default function StartBackupSection({
                                                sources,
@@ -19,21 +19,85 @@ export default function StartBackupSection({
     const [currentFile, setCurrentFile] = useState('');
     const [filesProcessed, setFilesProcessed] = useState(0);
     const [totalFiles, setTotalFiles] = useState(0);
+    const [isBackupPaused, setIsBackupPaused] = useState(false);
+
+    // Referência para acessar o estado atual dentro do intervalo
+    const isBackupPausedRef = useRef(false);
+    const backupIntervalRef = useRef(null);
+    const currentProgressRef = useRef(0);
+    const currentFileIndexRef = useRef(0);
+
+    // Atualiza a referência quando o estado muda
+    React.useEffect(() => {
+        isBackupPausedRef.current = isBackupPaused;
+    }, [isBackupPaused]);
+
+    // Função para fechar o modal manualmente
+    const handleCloseModal = () => {
+        handleCancel();
+    };
+
+    // Função para pausar/retomar o backup
+    const handlePauseResume = () => {
+        setIsBackupPaused(!isBackupPaused);
+    };
+
+    // Função para cancelar o backup
+    // ... imports e estados permanecem iguais até a função handleCancel
+
+// Função para cancelar o backup
+    // Função para cancelar o backup
+    const handleCancel = () => {
+        if (backupIntervalRef.current) {
+            clearInterval(backupIntervalRef.current);
+            backupIntervalRef.current = null;
+        }
+
+        // Cria um registro de backup cancelado
+        const timestamp = new Date().toLocaleString();
+        const cancelledBackup = {
+            id: Date.now(),
+            name: `Backup ${timestamp}`,
+            date: timestamp,
+            size: `${Math.round((currentProgressRef.current / 100) * 2.4)} GB`,
+            status: 'cancelled', // ← STATUS CORRETO
+            files: Math.floor(currentProgressRef.current / 10),
+            duration: `${Math.floor(currentProgressRef.current / 20)}m`
+        };
+
+        // Chama uma função específica para backup cancelado
+        if (executeBackup) {
+            // Passa um parâmetro indicando que é cancelado
+            executeBackup(cancelledBackup);
+        }
+
+        setIsBackupRunning(false);
+        setIsBackupPaused(false);
+        setBackupProgress(0);
+        setFilesProcessed(0);
+        setCurrentFile('');
+        currentProgressRef.current = 0;
+        currentFileIndexRef.current = 0;
+    };
+
+// ... resto do código permanece igual
 
     // Simular o progresso do backup
     const handleExecuteBackup = () => {
         // Inicia o backup
         setIsBackupRunning(true);
+        setIsBackupPaused(false);
+        isBackupPausedRef.current = false;
         setBackupProgress(0);
         setFilesProcessed(0);
+        currentProgressRef.current = 0;
+        currentFileIndexRef.current = 0;
 
         // Simular o backup com 10 arquivos
         const simulatedTotalFiles = 10;
         setTotalFiles(simulatedTotalFiles);
         setCurrentFile('Iniciando backup...');
 
-        let currentProgress = 0;
-        let currentFileIndex = 0;
         const fileNames = [
             'configuracoes.json',
             'documentos.docx',
@@ -47,18 +111,32 @@ export default function StartBackupSection({
             'arquivos_finais.rar'
         ];
 
-        const interval = setInterval(() => {
-            currentProgress += 10;
-            setBackupProgress(currentProgress);
-            setFilesProcessed(Math.floor(currentProgress / 10));
+        // Limpa qualquer intervalo existente
+        if (backupIntervalRef.current) {
+            clearInterval(backupIntervalRef.current);
+        }
 
-            // Atualizar arquivo atual
-            if (currentFileIndex < fileNames.length) {
-                setCurrentFile(fileNames[currentFileIndex]);
-                currentFileIndex++;
+        const interval = setInterval(() => {
+            // Verifica se está pausado usando a referência
+            if (isBackupPausedRef.current) {
+                return; // Pausado - não faz nada
             }
 
-            if (currentProgress >= 100) {
+            // Incrementa o progresso
+            currentProgressRef.current += 10;
+            const newProgress = currentProgressRef.current;
+
+            setBackupProgress(newProgress);
+            setFilesProcessed(Math.floor(newProgress / 10));
+
+            // Atualizar arquivo atual
+            if (currentFileIndexRef.current < fileNames.length) {
+                setCurrentFile(fileNames[currentFileIndexRef.current]);
+                currentFileIndexRef.current++;
+            }
+
+            // Verifica se terminou
+            if (newProgress >= 100) {
                 clearInterval(interval);
                 setCurrentFile('Finalizando backup...');
 
@@ -72,12 +150,8 @@ export default function StartBackupSection({
                 }, 2000);
             }
         }, 500);
-    };
 
-    // Função para fechar o modal manualmente
-    const handleCloseModal = () => {
-        setIsBackupRunning(false);
-        // Feature para cancelar (futura)
+        backupIntervalRef.current = interval;
     };
 
     return (
@@ -210,6 +284,9 @@ export default function StartBackupSection({
                     filesProcessed={filesProcessed}
                     totalFiles={totalFiles}
                     onClose={handleCloseModal}
+                    onPauseResume={handlePauseResume}
+                    onCancel={handleCancel}
+                    isPaused={isBackupPaused}
                 />
             )}
         </>
