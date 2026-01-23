@@ -203,7 +203,6 @@ export default function StartBackupSection({
 
                     // Atualiza progresso específico da tarefa
                     if (status.fileCount && status.totalSizeMB) {
-
                         const estimatedTotalFiles = 1000;
                         const progress = Math.min(100, (status.fileCount / estimatedTotalFiles) * 100);
                         setBackupProgress(prev => Math.max(prev, progress));
@@ -242,14 +241,14 @@ export default function StartBackupSection({
                 <div>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-2">
-                            <FolderTree className="w-5 h-5 text-gray-900"/>
+                            <FolderTree className="w-5 h-5 text-gray-900" />
                             <h3 className="text-sm font-semibold text-gray-900">Origins</h3>
                         </div>
                         <button
                             onClick={addSource}
                             className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
                         >
-                            <Plus className="w-4 h-4"/>
+                            <Plus className="w-4 h-4" />
                             <span>Add</span>
                         </button>
                     </div>
@@ -269,7 +268,7 @@ export default function StartBackupSection({
                                         value={source.path}
                                         onChange={(e) => {
                                             setSources(sources.map(s =>
-                                                s.id === source.id ? {...s, path: e.target.value} : s
+                                                s.id === source.id ? { ...s, path: e.target.value } : s
                                             ));
                                         }}
                                     />
@@ -277,7 +276,7 @@ export default function StartBackupSection({
                                         onClick={() => removeSource(source.id)}
                                         className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded"
                                     >
-                                        <Trash2 className="w-4 h-4"/>
+                                        <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
                             ))
@@ -289,14 +288,14 @@ export default function StartBackupSection({
                 <div>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-2">
-                            <Database className="w-5 h-5 text-gray-900"/>
+                            <Database className="w-5 h-5 text-gray-900" />
                             <h3 className="text-sm font-semibold text-gray-900">Destinations</h3>
                         </div>
                         <button
                             onClick={addDestination}
                             className="flex items-center space-x-1 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded border border-gray-200"
                         >
-                            <Plus className="w-4 h-4"/>
+                            <Plus className="w-4 h-4" />
                             <span>Add</span>
                         </button>
                     </div>
@@ -316,7 +315,7 @@ export default function StartBackupSection({
                                         value={dest.path}
                                         onChange={(e) => {
                                             setDestinations(destinations.map(d =>
-                                                d.id === dest.id ? {...d, path: e.target.value} : d
+                                                d.id === dest.id ? { ...d, path: e.target.value } : d
                                             ));
                                         }}
                                     />
@@ -324,7 +323,7 @@ export default function StartBackupSection({
                                         onClick={() => removeDestination(dest.id)}
                                         className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded"
                                     >
-                                        <Trash2 className="w-4 h-4"/>
+                                        <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
                             ))
@@ -337,15 +336,14 @@ export default function StartBackupSection({
                     <button
                         onClick={handleExecuteBackup}
                         disabled={isBackupRunning || sources.length === 0 || destinations.length === 0}
-                        className={`flex items-center space-x-2 px-6 py-2.5 text-white rounded transition-colors ${
-                            isBackupRunning
+                        className={`flex items-center space-x-2 px-6 py-2.5 text-white rounded transition-colors ${isBackupRunning
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : (sources.length === 0 || destinations.length === 0)
                                 ? 'bg-gray-400 cursor-not-allowed'
-                                : (sources.length === 0 || destinations.length === 0)
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-gray-900 hover:bg-gray-800'
+                                : 'bg-gray-900 hover:bg-gray-800'
                         }`}
                     >
-                        <Play className="w-4 h-4"/>
+                        <Play className="w-4 h-4" />
                         <span>
                             {isBackupRunning
                                 ? 'Backup in progress...'
