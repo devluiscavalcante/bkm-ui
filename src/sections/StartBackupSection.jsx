@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Database, FolderTree, Play, Plus, Trash2 } from 'lucide-react';
 import { BackupProgressModal } from './BackupProgressModal';
+import { backupApi, BackupProgressStream } from '../services/backupApi';
 
 export default function StartBackupSection({
                                                sources,
@@ -20,126 +21,27 @@ export default function StartBackupSection({
     const [filesProcessed, setFilesProcessed] = useState(0);
     const [totalFiles, setTotalFiles] = useState(0);
     const [isBackupPaused, setIsBackupPaused] = useState(false);
+    const [activeTaskIds, setActiveTaskIds] = useState([]);
 
-    // Referência para acessar o estado atual dentro do intervalo
-    const isBackupPausedRef = useRef(false);
-    const backupIntervalRef = useRef(null);
-    const currentProgressRef = useRef(0);
-    const currentFileIndexRef = useRef(0);
+    // Referências
+    const progressStreamRef = useRef(null);
 
-    // Atualiza a referência quando o estado muda
-    React.useEffect(() => {
-        isBackupPausedRef.current = isBackupPaused;
-    }, [isBackupPaused]);
+    // Inicializar stream de progresso
+    useEffect(() => {
+        progressStreamRef.current = new BackupProgressStream();
 
-    // Função para fechar o modal manualmente
-    const handleCloseModal = () => {
-        handleCancel();
-    };
-
-    // Função para pausar/retomar o backup
-    const handlePauseResume = () => {
-        setIsBackupPaused(!isBackupPaused);
-    };
-
-    // Função para cancelar o backup
-    // ... imports e estados permanecem iguais até a função handleCancel
-
-// Função para cancelar o backup
-    // Função para cancelar o backup
-    const handleCancel = () => {
-        if (backupIntervalRef.current) {
-            clearInterval(backupIntervalRef.current);
-            backupIntervalRef.current = null;
-        }
-
-        // Cria um registro de backup cancelado
-        const timestamp = new Date().toLocaleString();
-        const cancelledBackup = {
-            id: Date.now(),
-            name: `Backup ${timestamp}`,
-            date: timestamp,
-            size: `${Math.round((currentProgressRef.current / 100) * 2.4)} GB`,
-            status: 'cancelled', // ← STATUS CORRETO
-            files: Math.floor(currentProgressRef.current / 10),
-            duration: `${Math.floor(currentProgressRef.current / 20)}m`
-        };
-
-        // Chama uma função específica para backup cancelado
-        if (executeBackup) {
-            // Passa um parâmetro indicando que é cancelado
-            executeBackup(cancelledBackup);
-        }
-
-        setIsBackupRunning(false);
-        setIsBackupPaused(false);
-        setBackupProgress(0);
-        setFilesProcessed(0);
-        setCurrentFile('');
-        currentProgressRef.current = 0;
-        currentFileIndexRef.current = 0;
-    };
-
-// ... resto do código permanece igual
-
-    // Simular o progresso do backup
-    const handleExecuteBackup = () => {
-        // Inicia o backup
-        setIsBackupRunning(true);
-        setIsBackupPaused(false);
-        isBackupPausedRef.current = false;
-        setBackupProgress(0);
-        setFilesProcessed(0);
-        currentProgressRef.current = 0;
-        currentFileIndexRef.current = 0;
-
-        // Simular o backup com 10 arquivos
-        const simulatedTotalFiles = 10;
-        setTotalFiles(simulatedTotalFiles);
-        setCurrentFile('Iniciando backup...');
-
-        const fileNames = [
-            'configuracoes.json',
-            'documentos.docx',
-            'planilha.xlsx',
-            'imagens.zip',
-            'database.sql',
-            'logs.txt',
-            'backup_antigo.tar',
-            'fotos.jpg',
-            'videos.mp4',
-            'arquivos_finais.rar'
-        ];
-
-        // Limpa qualquer intervalo existente
-        if (backupIntervalRef.current) {
-            clearInterval(backupIntervalRef.current);
-        }
-
-        const interval = setInterval(() => {
-            // Verifica se está pausado usando a referência
-            if (isBackupPausedRef.current) {
-                return; // Pausado - não faz nada
-            }
-
-            // Incrementa o progresso
-            currentProgressRef.current += 10;
-            const newProgress = currentProgressRef.current;
-
-            setBackupProgress(newProgress);
-            setFilesProcessed(Math.floor(newProgress / 10));
-
-            // Atualizar arquivo atual
-            if (currentFileIndexRef.current < fileNames.length) {
-                setCurrentFile(fileNames[currentFileIndexRef.current]);
-                currentFileIndexRef.current++;
+        progressStreamRef.current.on('progress', (data) => {
+            if (data.taskId && activeTaskIds.includes(data.taskId)) {
+                setBackupProgress(data.percentage || 0);
+                setFilesProcessed(data.filesProcessed || 0);
+                setTotalFiles(data.totalFiles || 0);
+                setCurrentFile(data.currentFile || '');
             }
         });
 
-            // Verifica se terminou
-            if (newProgress >= 100) {
-                clearInterval(interval);
-                setCurrentFile('Finalizando backup...');
+        progressStreamRef.current.on('error', (error) => {
+            console.error('Progress stream error:', error);
+        });
 
         progressStreamRef.current.connect();
 
@@ -176,9 +78,86 @@ export default function StartBackupSection({
                     message: result.message || 'Backup started'
                 });
             }
-        }, 500);
 
-        backupIntervalRef.current = interval;
+        } catch (error) {
+            console.error('Backup failed:', error);
+            alert(`Backup failed: ${error.message}`);
+            setIsBackupRunning(false);
+            setActiveTaskIds([]);
+        }
+    };
+
+    // Função para pausar/retomar backup
+    const handlePauseResume = async () => {
+        if (activeTaskIds.length === 0) return;
+
+        try {
+            if (isBackupPaused) {
+                // Retoma todos os backups pausados
+                for (const taskId of activeTaskIds) {
+                    await backupApi.resumeBackup(taskId);
+                }
+                setIsBackupPaused(false);
+            } else {
+                // Pausa todos os backups ativos
+                for (const taskId of activeTaskIds) {
+                    await backupApi.pauseBackup(taskId);
+                }
+                setIsBackupPaused(true);
+            }
+        } catch (error) {
+            console.error('Pause/Resume failed:', error);
+            alert(`Operation failed: ${error.message}`);
+        }
+    };
+
+    // Função para cancelar backup
+    const handleCancel = async () => {
+        if (activeTaskIds.length === 0) return;
+
+        if (!window.confirm('Are you sure you want to cancel the backup?')) {
+            return;
+        }
+
+        try {
+            // Cancela todos os backups ativos
+            for (const taskId of activeTaskIds) {
+                await backupApi.cancelBackup(taskId);
+            }
+
+            // Cria registro de cancelamento
+            const cancelledBackup = {
+                id: Date.now(),
+                name: 'Backup Cancelled',
+                date: new Date().toLocaleString(),
+                size: '0 GB',
+                status: 'cancelled',
+                files: filesProcessed,
+                duration: '0m'
+            };
+
+            // Atualiza histórico
+            if (executeBackup) {
+                executeBackup(cancelledBackup);
+            }
+
+            // Limpa estados
+            setIsBackupRunning(false);
+            setIsBackupPaused(false);
+            setActiveTaskIds([]);
+            setBackupProgress(0);
+            setFilesProcessed(0);
+            setCurrentFile('');
+
+        } catch (error) {
+            console.error('Cancel failed:', error);
+            alert(`Cancel failed: ${error.message}`);
+        }
+    };
+
+    // Função para fechar o modal manualmente
+    const handleCloseModal = () => {
+        handleCancel();
     };
 
     // Monitora status das tarefas ativas
