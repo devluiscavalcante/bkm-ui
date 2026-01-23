@@ -1,20 +1,28 @@
-import { useState, useEffect } from 'react';
-import { Minimize2, Maximize2, X, CheckCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Minimize2, Maximize2, X, CheckCircle, PauseCircle, PlayCircle, StopCircle } from 'lucide-react';
 
 export function BackupProgressModal({
                                         progress,
                                         currentFile = '',
                                         filesProcessed = 0,
                                         totalFiles = 0,
-                                        onClose
+                                        onClose,
+                                        onPauseResume,
+                                        onCancel,
+                                        isPaused = false
                                     }) {
     const [isMinimized, setIsMinimized] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
+    const progressRef = useRef(progress);
 
-    // Monitor when progress reaches 100%
+    // Atualiza a referência do progresso
+    useEffect(() => {
+        progressRef.current = progress;
+    }, [progress]);
+
+    // Monitor quando progresso chega a 100%
     useEffect(() => {
         if (progress >= 100 && !isCompleted) {
-            // Wait 1 second before showing completion screen
             const timer = setTimeout(() => {
                 setIsCompleted(true);
             }, 1000);
@@ -34,7 +42,7 @@ export function BackupProgressModal({
         };
     }, [isMinimized]);
 
-    // If minimized, show compact version
+    // Se estiver minimizado, mostra versão compacta
     if (isMinimized) {
         return (
             <div className="fixed bottom-4 right-4 z-50">
@@ -87,25 +95,25 @@ export function BackupProgressModal({
         );
     }
 
-    // Completion screen when backup finishes
+    // Tela de conclusão quando backup termina
     if (isCompleted) {
         return (
             <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                 <div className="w-full max-w-md bg-white rounded-lg shadow-xl border border-gray-200">
                     <div className="p-8">
-                        {/* Centered title */}
+                        {/* Título centralizado */}
                         <h2 className="text-2xl font-semibold text-gray-900 text-center mb-8">
                             Backup Completed
                         </h2>
 
-                        {/* Success message - no file count */}
+                        {/* Mensagem de sucesso */}
                         <div className="text-center mb-8">
                             <p className="text-base text-gray-700">
                                 Backup finished successfully
                             </p>
                         </div>
 
-                        {/* Close button */}
+                        {/* Botão para fechar */}
                         <div className="mt-8 flex justify-center">
                             {onClose && (
                                 <button
@@ -122,7 +130,7 @@ export function BackupProgressModal({
         );
     }
 
-    // Normal progress screen
+    // Tela normal de progresso
     return (
         <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="w-full max-w-md bg-white rounded-lg shadow-xl border border-gray-200">
@@ -149,7 +157,7 @@ export function BackupProgressModal({
                         </div>
                     </div>
 
-                    {/* Files processed - only shown during progress */}
+                    {/* Files processed */}
                     {totalFiles > 0 && (
                         <div className="mb-6">
                             <div className="text-sm text-gray-600 mb-1">Files</div>
@@ -175,13 +183,47 @@ export function BackupProgressModal({
 
                     {/* Current file */}
                     {currentFile && (
-                        <div className="mb-2">
+                        <div className="mb-6">
                             <div className="text-sm text-gray-600 mb-1">Current file</div>
                             <p className="text-sm font-medium text-gray-900 truncate">
                                 {currentFile}
                             </p>
                         </div>
                     )}
+
+                    {/* Action buttons */}
+                    <div className="flex justify-between pt-4 border-t border-gray-200">
+                        <div className="flex gap-2">
+                            {/* Pause/Resume button */}
+                            <button
+                                onClick={onPauseResume}
+                                className="flex items-center gap-2 px-4 py-2 text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                {isPaused ? (
+                                    <>
+                                        <PlayCircle className="w-4 h-4" />
+                                        <span>Resume</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <PauseCircle className="w-4 h-4" />
+                                        <span>Pause</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
+
+                        <div className="flex gap-2">
+                            {/* Cancel button */}
+                            <button
+                                onClick={onCancel}
+                                className="flex items-center gap-2 px-4 py-2 text-sm border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors"
+                            >
+                                <StopCircle className="w-4 h-4" />
+                                <span>Cancel</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
