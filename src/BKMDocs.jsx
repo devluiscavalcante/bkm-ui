@@ -127,12 +127,12 @@ export default function BKMDocs() {
         historico: {
             title: 'History',
             icon: History,
-            content: <HistorySection history={backupHistory}/>
+            content: <HistorySection />
         },
         logs: {
             title: 'Logs',
             icon: List,
-            content: <LogsSection logs={logs}/>
+            content: <LogsSection />
         }
     };
 
