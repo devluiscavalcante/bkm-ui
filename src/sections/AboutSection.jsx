@@ -2,13 +2,13 @@ import { Database, FileText, Settings, Zap } from 'lucide-react';
 
 export default function AboutSection() {
     return (
-        <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
                 <h3 className="text-sm font-semibold text-gray-900 mb-4">
                     How it works
                 </h3>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                     <div className="flex items-start space-x-3">
                         <Settings className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
                         <p className="text-gray-700 leading-relaxed">
